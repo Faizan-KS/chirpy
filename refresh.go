@@ -2,9 +2,10 @@ package main
 
 import (
 	"encoding/json"
-	"http_adv/internal/auth"
 	"net/http"
 	"time"
+
+	"github.com/Faizan-KS/chirpy/internal/auth"
 )
 
 func (cfg *apiConfig) handlerRefresh(w http.ResponseWriter, r *http.Request) {

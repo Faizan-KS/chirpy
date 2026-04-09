@@ -2,11 +2,12 @@ package main
 
 import (
 	"encoding/json"
-	"http_adv/internal/auth"
-	"http_adv/internal/database"
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/Faizan-KS/chirpy/internal/auth"
+	"github.com/Faizan-KS/chirpy/internal/database"
 
 	"github.com/google/uuid"
 )
@@ -99,8 +100,8 @@ func (cfg *apiConfig) handlerDeleteChirp(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	_,err = cfg.database.DeleteChirp(r.Context(), database.DeleteChirpParams{
-		ID: chirpID,
+	_, err = cfg.database.DeleteChirp(r.Context(), database.DeleteChirpParams{
+		ID:     chirpID,
 		UserID: userID,
 	})
 	if err != nil {
@@ -111,6 +112,6 @@ func (cfg *apiConfig) handlerDeleteChirp(w http.ResponseWriter, r *http.Request)
 	w.WriteHeader(http.StatusNoContent)
 }
 
-func (cfg *apiConfig) handlerFollowChirp(w http.ResponseWriter, r *http.Request){
-	
+func (cfg *apiConfig) handlerFollowChirp(w http.ResponseWriter, r *http.Request) {
+
 }

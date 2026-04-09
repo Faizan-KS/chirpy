@@ -3,10 +3,11 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
-	"http_adv/internal/auth"
-	"http_adv/internal/database"
 	"net/http"
 	"time"
+
+	"github.com/Faizan-KS/chirpy/internal/auth"
+	"github.com/Faizan-KS/chirpy/internal/database"
 )
 
 func (cfg *apiConfig) handlerLogin(w http.ResponseWriter, r *http.Request) {

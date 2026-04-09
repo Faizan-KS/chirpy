@@ -2,19 +2,20 @@ package main
 
 import (
 	"database/sql"
-	"http_adv/internal/database"
 	"log"
 	"net/http"
 	"os"
 	"sync/atomic"
+
+	"github.com/Faizan-KS/chirpy/internal/database"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
 type apiConfig struct {
 	fileserverHits atomic.Int32
-	database *database.Queries
-	jwtSecret string
+	database       *database.Queries
+	jwtSecret      string
 }
 
 func main() {
@@ -22,21 +23,21 @@ func main() {
 	dbURL := os.Getenv("DB_URL")
 	jwtSecret := os.Getenv("JWT_SECRET")
 	if jwtSecret == "" {
-	log.Fatal("JWT_SECRET is not set")
-    }
+		log.Fatal("JWT_SECRET is not set")
+	}
 	db, err := sql.Open("postgres", dbURL)
-	if err!=nil{
+	if err != nil {
 		return
 	}
 	const filepathRoot = "."
-	const port = "8080"	
+	const port = "8080"
 
 	dbQueries := database.New(db)
 
 	apiCfg := apiConfig{
 		fileserverHits: atomic.Int32{},
-		database: dbQueries,
-		jwtSecret: jwtSecret,
+		database:       dbQueries,
+		jwtSecret:      jwtSecret,
 	}
 
 	mux := http.NewServeMux()
@@ -53,15 +54,14 @@ func main() {
 	mux.HandleFunc("POST /api/revoke", apiCfg.handlerRevoke)
 	//---------PUT Requests
 	//mux.HandleFunc("PUT /api/users",apiCfg.handlerUpdateDetails)
-	mux.HandleFunc("DELETE /api/chirps/{chirpID}",apiCfg.handlerDeleteChirp)
+	mux.HandleFunc("DELETE /api/chirps/{chirpID}", apiCfg.handlerDeleteChirp)
 	mux.HandleFunc("POST /api/polka/webhooks", apiCfg.upgradeUserHook)
-	
+
 	srv := &http.Server{
 		Addr:    ":" + port,
 		Handler: mux,
 	}
-	
+
 	log.Printf("Serving files from %s on port: %s\n", filepathRoot, port)
 	log.Fatal(srv.ListenAndServe())
 }
-
